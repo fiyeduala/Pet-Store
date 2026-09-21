@@ -158,7 +158,7 @@ class ProductVariant extends Model
     {
         $buffer ??= (int) settings('inventory.stock_buffer', 0);
 
-        return (int) $this->warehouseStocks
+        return (int) $this->loadMissing('warehouseStocks')->warehouseStocks
             ->when($warehouseIds !== null, fn ($c) => $c->whereIn('warehouse_id', $warehouseIds))
             ->filter(fn (WarehouseStock $s) => $s->quantity_known && ! $s->isStale())
             ->sum(fn (WarehouseStock $s) => max(0, (int) $s->quantity - $buffer));
@@ -170,7 +170,7 @@ class ProductVariant extends Model
      */
     public function hasKnownStock(?array $warehouseIds = null): bool
     {
-        return $this->warehouseStocks
+        return $this->loadMissing('warehouseStocks')->warehouseStocks
             ->when($warehouseIds !== null, fn ($c) => $c->whereIn('warehouse_id', $warehouseIds))
             ->contains(fn (WarehouseStock $s) => $s->quantity_known && ! $s->isStale());
     }

@@ -1,11 +1,178 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+@source '../../app/Livewire/**/*.php';
 
+/*
+ * Pet Store storefront design tokens.
+ *
+ * Warm white grounds, charcoal type, one restrained accent. The accent is
+ * overridden at runtime from brand settings, so changing it in admin
+ * repaints the storefront without a rebuild.
+ */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-cream-50: #fdfcfa;
+    --color-cream-100: #faf8f4;
+    --color-cream-200: #f3efe8;
+    --color-cream-300: #e8e2d8;
+
+    --color-ink-400: #8a8681;
+    --color-ink-500: #6b6763;
+    --color-ink-600: #4a4744;
+    --color-ink-700: #333130;
+    --color-ink-900: #1c1b1a;
+
+    --color-accent-50: #f0f7f6;
+    --color-accent-100: #d9eceb;
+    --color-accent-500: #3e7c78;
+    --color-accent-600: #336662;
+    --color-accent-700: #2a5450;
+
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Fraunces', ui-serif, Georgia, serif;
+
+    --radius-card: 0.875rem;
+}
+
+:root {
+    /* Overridden inline by the layout from the owner's brand settings. */
+    --brand-accent: var(--color-accent-500);
+    --brand-accent-contrast: #ffffff;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        background-color: var(--color-cream-50);
+        color: var(--color-ink-700);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 {
+        color: var(--color-ink-900);
+        font-family: var(--font-display);
+        font-weight: 600;
+        letter-spacing: -0.015em;
+    }
+
+    /* A visible, high-contrast focus ring on every interactive element.
+       Never removed, only restyled. */
+    :focus-visible {
+        outline: 2px solid var(--brand-accent);
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+
+    [hidden] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    .container-page {
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5
+               text-sm font-medium transition-colors duration-150
+               disabled:cursor-not-allowed disabled:opacity-50;
+    }
+
+    .btn-primary {
+        background-color: var(--brand-accent);
+        color: var(--brand-accent-contrast);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+        filter: brightness(0.92);
+    }
+
+    .btn-secondary {
+        @apply border border-ink-900/15 bg-white text-ink-700 hover:border-ink-900/30 hover:bg-cream-100;
+    }
+
+    .btn-ghost {
+        @apply text-ink-600 hover:bg-cream-200 hover:text-ink-900;
+    }
+
+    .btn-lg {
+        @apply px-7 py-3.5 text-base;
+    }
+
+    .card {
+        @apply rounded-[--radius-card] border border-ink-900/8 bg-white;
+    }
+
+    .field-label {
+        @apply mb-1.5 block text-sm font-medium text-ink-700;
+    }
+
+    .field-input {
+        @apply block w-full rounded-lg border border-ink-900/15 bg-white px-3.5 py-2.5
+               text-ink-900 placeholder:text-ink-400
+               focus:border-transparent focus:ring-2 focus:ring-[--brand-accent];
+    }
+
+    .field-input[aria-invalid='true'] {
+        @apply border-red-400 ring-1 ring-red-300;
+    }
+
+    .field-error {
+        @apply mt-1.5 flex items-start gap-1.5 text-sm text-red-700;
+    }
+
+    .badge {
+        @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium;
+    }
+
+    .prose-store {
+        @apply text-ink-600 leading-relaxed;
+    }
+
+    .prose-store h2 {
+        @apply mt-10 mb-3 text-2xl;
+    }
+
+    .prose-store h3 {
+        @apply mt-8 mb-2 text-lg;
+    }
+
+    .prose-store p {
+        @apply mb-4;
+    }
+
+    .prose-store ul {
+        @apply mb-4 list-disc space-y-1.5 pl-5;
+    }
+
+    .prose-store a {
+        @apply underline decoration-ink-400 underline-offset-2 hover:decoration-ink-700;
+    }
+
+    .skeleton {
+        @apply animate-pulse rounded bg-cream-200;
+    }
+}
+
+/* Honour the operating system's reduced-motion preference everywhere. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .skeleton {
+        animation: none;
+    }
 }

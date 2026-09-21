@@ -26,6 +26,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Administration
+    |--------------------------------------------------------------------------
+    */
+    'admin' => [
+        // Turn on once every staff member has enrolled an authenticator app.
+        'require_mfa' => env('ADMIN_REQUIRE_MFA', false),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Demo / live isolation
     |--------------------------------------------------------------------------
     | Demo mode is per-integration, held in the database. This flag only

@@ -141,11 +141,27 @@ class Product extends Model
     }
 
     /**
+     * Active variants from the already-loaded `variants` relation.
+     *
+     * Reading the loaded collection rather than the `activeVariants`
+     * relation means a view can call this without triggering a second
+     * query per product in a listing.
+     *
+     * @return \Illuminate\Support\Collection<int, ProductVariant>
+     */
+    public function activeVariantsLoaded(): \Illuminate\Support\Collection
+    {
+        return $this->loadMissing('variants')->variants
+            ->filter(fn (ProductVariant $v) => $v->is_active)
+            ->values();
+    }
+
+    /**
      * Cheapest currently sellable variant, used for "from" pricing.
      */
     public function cheapestVariant(): ?ProductVariant
     {
-        return $this->activeVariants
+        return $this->activeVariantsLoaded()
             ->filter(fn (ProductVariant $v) => $v->effectivePriceMinor() !== null)
             ->sortBy(fn (ProductVariant $v) => $v->effectivePriceMinor())
             ->first();
@@ -153,6 +169,6 @@ class Product extends Model
 
     public function hasAnyKnownStock(): bool
     {
-        return $this->activeVariants->contains(fn (ProductVariant $v) => $v->isPurchasable());
+        return $this->activeVariantsLoaded()->contains(fn (ProductVariant $v) => $v->isPurchasable());
     }
 }

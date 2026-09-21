@@ -154,6 +154,11 @@ class PricingEngine
      */
     public function resolveRule(ProductVariant $variant, Market $market): ?PricingRule
     {
+        // Category scoping needs the product and its categories. Load them
+        // here rather than relying on the caller, so a single-variant
+        // reprice does not silently trigger an N+1 in a bulk loop.
+        $variant->loadMissing('product.categories');
+
         $product = $variant->product;
         $categoryIds = $product?->categories->pluck('id')->all() ?? [];
 
