@@ -82,29 +82,71 @@ Check your PHP extensions with:
 php -m
 ```
 
-## Getting started locally
+## Trying it out locally
+
+You need PHP 8.2+, Composer and Node. No database server, no Redis and no
+credentials — it runs on SQLite with every integration in demo mode.
 
 ```bash
 composer install
-cp .env.example .env
-php artisan key:generate
-
-# SQLite is fine for local work.
-touch database/database.sqlite
-# then set DB_CONNECTION=sqlite in .env
-
-php artisan migrate
-php artisan db:seed                  # settings, roles, market, taxonomy, content
-php artisan db:seed --class=DemoSeeder   # ...plus sample products (never in production)
-
-php artisan storage:link
-npm install && npm run build
-
-php artisan petstore:make-admin --role=owner
+composer run setup:local          # .env on SQLite, migrate, seed demo catalogue
+npm ci && npm run build           # build the storefront assets
+php artisan petstore:make-admin   # create your admin login (prompts for a password)
 php artisan serve
 ```
 
-The storefront is at `/`, the admin panel at `/admin`.
+| | |
+|---|---|
+| Storefront | <http://127.0.0.1:8000> |
+| Admin | <http://127.0.0.1:8000/admin> |
+
+`setup:local` refuses to run against a `.env` marked `APP_ENV=production`,
+and leaves an existing `.env` alone. It is for trying the application out,
+not for deploying — see `docs/deployment-cpanel.md` for that.
+
+There is **no seeded administrator and no default password.**
+`petstore:make-admin` prompts for one and enforces a strong policy.
+
+Mail is written to `storage/logs/laravel.log` rather than sent, so you can
+read the order confirmations and guest tracking links without an SMTP
+server.
+
+### What to try
+
+Nothing is charged and no supplier order is placed — a banner on every
+page says so.
+
+1. Browse the shop, filter by pet type, sort by price.
+2. Open a product and enter ZIP `07101` in the delivery estimator. Three
+   services come back; note that one honestly reports **no estimate**
+   rather than inventing one, and that business days and calendar days are
+   kept distinct.
+3. Look at the *Treat Dispensing Puzzle Ball* — its supplier never reports
+   a stock figure, so it shows "Availability unknown" and refuses to go in
+   the basket. That is different from "out of stock".
+4. Check out as a guest and settle the simulated payment.
+5. In admin, open the order. All five states are shown separately, and the
+   approve dialog spells out that approving does not pay the supplier.
+6. Approve → submit → pay the supplier, reading each confirmation.
+
+`docs/demo-scenarios.md` explains how to force a timeout, an out-of-stock
+rejection or an insufficient supplier balance on demand.
+
+### Manual setup, if you prefer
+
+```bash
+cp .env.example .env
+# set DB_CONNECTION=sqlite and comment out the DB_HOST/PORT/DATABASE lines
+touch database/database.sqlite
+php artisan key:generate
+php artisan migrate
+php artisan db:seed --class=DemoSeeder
+php artisan storage:link
+```
+
+Use `php artisan db:seed` on its own for the production baseline —
+settings, roles, the market, taxonomy and policy drafts, with **no** sample
+products.
 
 There is **no seeded default administrator and no default password.**
 `petstore:make-admin` prompts for one and enforces a strong policy.
