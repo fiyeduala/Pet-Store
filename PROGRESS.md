@@ -33,7 +33,7 @@ Run locally against a clean database:
 
 - `php artisan migrate:fresh` — all 16 migrations apply
 - `php artisan db:seed --class=DemoSeeder` — seeds through the real import path
-- `php artisan test` — 114 tests, 234 assertions, all passing
+- `php artisan test` — 149 tests, 386 assertions, all passing
 - `npm run build` — Vite production build succeeds
 - `php artisan cj:verify` — passes against the demo adapter
 - Storefront pages render with real content (home, catalogue, product,
@@ -94,10 +94,9 @@ Not required by the brief, but the obvious next steps:
 
 - Address book CRUD on the storefront (addresses are read-only today).
 - Customer-initiated return requests from the order page (the domain
-  service exists; there is no storefront UI).
-- A staff management resource in admin (roles work; users are created via
-  `petstore:make-admin`).
-- An audit log viewer (the table and model exist; nothing writes to it
-  systematically yet beyond order state events).
+  service and the admin side exist; there is no storefront UI).
+- Broader audit coverage. Staff creation, role changes and two-factor
+  resets are audited; extend the same pattern to gateway settings and
+  pricing rule changes.
 - Currency conversion, if Paystack NGN settlement is ever needed. The
   schema supports it; the policy and UI are deliberately not built.

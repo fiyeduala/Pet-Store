@@ -45,6 +45,9 @@ class AdminPanelSmokeTest extends TestCase
             'content pages' => ['/admin/content-pages'],
             'faq' => ['/admin/faqs'],
             'enquiries' => ['/admin/contact-messages'],
+            'customers' => ['/admin/customers'],
+            'staff' => ['/admin/staff'],
+            'audit history' => ['/admin/audit-logs'],
         ];
     }
 
@@ -67,6 +70,21 @@ class AdminPanelSmokeTest extends TestCase
         $this->actingAs($support)->get('/admin/payment-gateways')->assertForbidden();
         $this->actingAs($support)->get('/admin/fulfilment-settings')->assertForbidden();
         $this->actingAs($support)->get('/admin/brand-settings')->assertForbidden();
+
+        // Staff management and the audit trail are owner-only.
+        $this->actingAs($support)->get('/admin/staff')->assertForbidden();
+        $this->actingAs($support)->get('/admin/audit-logs')->assertForbidden();
+    }
+
+    #[Test]
+    public function an_operations_user_cannot_manage_staff_or_read_the_audit_trail(): void
+    {
+        $ops = $this->staff('operations');
+
+        $this->actingAs($ops)->get('/admin/products')->assertSuccessful();
+        $this->actingAs($ops)->get('/admin/staff')->assertForbidden();
+        $this->actingAs($ops)->get('/admin/audit-logs')->assertForbidden();
+        $this->actingAs($ops)->get('/admin/payment-gateways')->assertForbidden();
     }
 
     #[Test]
