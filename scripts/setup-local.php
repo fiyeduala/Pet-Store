@@ -79,7 +79,9 @@ $commands = [
     'Generating the application key' => 'key:generate --force',
     'Running migrations' => 'migrate:fresh --force',
     'Seeding the demo catalogue' => 'db:seed --class=DemoSeeder --force',
-    'Linking storage' => 'storage:link',
+    // --force so re-running the setup does not print a red error about
+    // a link that is already there.
+    'Linking storage' => 'storage:link --force',
 ];
 
 foreach ($commands as $label => $command) {
