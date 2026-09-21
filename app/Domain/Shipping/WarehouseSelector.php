@@ -93,7 +93,9 @@ class WarehouseSelector
      */
     public function eligibleWarehouses(Market $market, bool $allowOverseas = false): Collection
     {
-        $query = Warehouse::query()->where('is_enabled', true);
+        // The supplier is needed for every parcel we quote, so load it once
+        // here rather than once per parcel.
+        $query = Warehouse::query()->with('supplier')->where('is_enabled', true);
 
         if (! $allowOverseas) {
             // Domestic-only is the default. Overseas fulfilment requires a
