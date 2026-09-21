@@ -37,6 +37,14 @@ class AdminPanelSmokeTest extends TestCase
             'brand settings' => ['/admin/brand-settings'],
             'fulfilment settings' => ['/admin/fulfilment-settings'],
             'system health' => ['/admin/system-health'],
+            'import' => ['/admin/import-supplier-products'],
+            'pet types' => ['/admin/pet-types'],
+            'categories' => ['/admin/categories'],
+            'collections' => ['/admin/collections'],
+            'discounts' => ['/admin/discounts'],
+            'content pages' => ['/admin/content-pages'],
+            'faq' => ['/admin/faqs'],
+            'enquiries' => ['/admin/contact-messages'],
         ];
     }
 
