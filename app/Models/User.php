@@ -74,8 +74,15 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
      */
     public function canAccessPanel(Panel $panel): bool
     {
+        // A soft-deleted account cannot authenticate at all (the global
+        // scope excludes it), so this only needs to check staff status and
+        // role. `deleted_at` is read from the raw attributes because a
+        // freshly created model has not had it hydrated, and strict mode
+        // turns reading an absent attribute into an exception.
+        $isDeleted = ($this->getAttributes()['deleted_at'] ?? null) !== null;
+
         return $this->is_staff
-            && $this->deleted_at === null
+            && ! $isDeleted
             && $this->hasAnyRole([self::ROLE_OWNER, self::ROLE_OPERATIONS, self::ROLE_SUPPORT]);
     }
 

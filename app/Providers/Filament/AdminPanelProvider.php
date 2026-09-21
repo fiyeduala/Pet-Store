@@ -7,6 +7,7 @@ namespace App\Providers\Filament;
 use App\Domain\Settings\Branding;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Enums\ThemeMode;
+use Filament\Pages\Dashboard;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -57,6 +58,9 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            // An explicit dashboard, so /admin renders rather than trying to
+            // redirect to whichever resource happens to be first.
+            ->pages([Dashboard::class])
             ->navigationGroups([
                 NavigationGroup::make('Catalogue'),
                 NavigationGroup::make('Orders'),
@@ -69,6 +73,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->widgets([
                 Widgets\AccountWidget::class,
+                \App\Filament\Widgets\TradingOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,
