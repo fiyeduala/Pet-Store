@@ -29,9 +29,14 @@ class TaxonomySeeder extends Seeder
         ];
 
         foreach ($petTypes as [$slug, $name, $tagline, $position, $primary]) {
+            // Locally drawn SVG placeholders. Replace with real photography
+            // before launch; see docs/live-launch-checklist.md.
+            $image = in_array($slug, ['dogs', 'cats'], true) ? "demo/pet-{$slug}.svg" : null;
+
             PetType::updateOrCreate(['slug' => $slug], [
                 'name' => $name,
                 'tagline' => $tagline,
+                'image_path' => $image,
                 'position' => $position,
                 'is_primary' => $primary,
                 // Non-primary types start hidden so the shop does not show

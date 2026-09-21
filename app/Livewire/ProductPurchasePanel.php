@@ -43,8 +43,28 @@ class ProductPurchasePanel extends Component
     public function mount(Product $product): void
     {
         $this->product = $product;
-        $this->selectedVariantId = $product->default_variant_id
-            ?? $product->activeVariantsLoaded()->first()?->id;
+        $this->selectedVariantId = $this->initialVariantId($product);
+    }
+
+    /**
+     * Prefer the merchandised default, but only while it can actually be
+     * bought. Landing a shopper on an out-of-stock option when another one
+     * is available reads as "this product is unavailable" and loses the
+     * sale for no reason.
+     */
+    private function initialVariantId(Product $product): ?int
+    {
+        $variants = $product->activeVariantsLoaded();
+
+        $default = $variants->firstWhere('id', $product->default_variant_id);
+
+        if ($default?->isPurchasable()) {
+            return $default->id;
+        }
+
+        return $variants->first(fn (ProductVariant $v) => $v->isPurchasable())?->id
+            ?? $default?->id
+            ?? $variants->first()?->id;
     }
 
     public function selectVariant(int $variantId): void

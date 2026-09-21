@@ -40,6 +40,8 @@ class ContentSeeder extends Seeder
                 'subtitle' => 'A small, considered range for dogs and cats — chosen for how it holds up, not how it photographs.',
                 'cta_label' => 'Shop everything',
                 'cta_url' => '/shop',
+                'image_path' => 'demo/hero.svg',
+                'image_alt' => '',
                 'position' => 1,
             ],
             [

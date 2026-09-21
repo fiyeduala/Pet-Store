@@ -41,6 +41,10 @@ class CartService
 
     public function add(Cart $cart, ProductVariant $variant, int $quantity = 1): CartItem
     {
+        // The snapshot and stock check both read these relations, so load
+        // them once up front rather than lazily mid-transaction.
+        $variant->loadMissing(['product', 'warehouseStocks']);
+
         $price = $variant->effectivePriceMinor();
 
         if ($price === null) {
