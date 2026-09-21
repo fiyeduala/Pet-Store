@@ -3,7 +3,12 @@
     "name": "petstore/storefront",
     "type": "project",
     "description": "Pet Store - US-first pet retail storefront with Filament administration and CJdropshipping supplier integration.",
-    "keywords": ["laravel", "ecommerce", "filament", "dropshipping"],
+    "keywords": [
+        "laravel",
+        "ecommerce",
+        "filament",
+        "dropshipping"
+    ],
     "license": "proprietary",
     "require": {
         "php": "^8.2",
@@ -29,7 +34,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Support/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
