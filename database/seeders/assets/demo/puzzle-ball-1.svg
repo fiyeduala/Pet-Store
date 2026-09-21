@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Placeholder product image">
+  <rect width="400" height="400" fill="#F5EFE6"/>
+  <circle cx="200" cy="200" r="82" fill="#B3854A" opacity="0.18"/>
+                      <circle cx="200" cy="200" r="82" fill="none" stroke="#B3854A" stroke-width="10"/>
+                      <circle cx="176" cy="178" r="13" fill="#B3854A"/><circle cx="226" cy="196" r="10" fill="#B3854A"/>
+                      <circle cx="192" cy="230" r="11" fill="#B3854A"/>
+  <text x="200" y="352" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13"
+        fill="#4A4744" opacity="0.5">Placeholder image</text>
+</svg>

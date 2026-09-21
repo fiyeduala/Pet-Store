@@ -16,6 +16,8 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
 /**
@@ -50,6 +52,8 @@ class DemoCatalogueSeeder extends Seeder
             );
         }
 
+        $this->publishPlaceholderImages();
+
         $supplier = Supplier::where('code', 'cjdropshipping')->firstOrFail();
         $market = Market::where('code', 'US')->firstOrFail();
 
@@ -74,6 +78,34 @@ class DemoCatalogueSeeder extends Seeder
         );
 
         $this->command?->info('Seeded '.Product::count().' demo products with per-warehouse stock.');
+    }
+
+    /**
+     * Copy the tracked placeholder artwork into the public disk.
+     *
+     * The images live under database/seeders/assets so they are in version
+     * control; storage/app/public is runtime state and is not. Without this
+     * a fresh clone would seed products whose images 404.
+     */
+    private function publishPlaceholderImages(): void
+    {
+        $source = database_path('seeders/assets/demo');
+
+        if (! File::isDirectory($source)) {
+            $this->command?->warn('No placeholder images found; demo products will have no imagery.');
+
+            return;
+        }
+
+        $disk = Storage::disk('public');
+
+        foreach (File::files($source) as $file) {
+            $target = 'demo/'.$file->getFilename();
+
+            if (! $disk->exists($target)) {
+                $disk->put($target, File::get($file->getPathname()));
+            }
+        }
     }
 
     private function merchandise(Product $product, string $pid, int $index): void

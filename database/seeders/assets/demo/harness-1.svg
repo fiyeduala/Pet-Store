@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Placeholder product image">
+  <rect width="400" height="400" fill="#EFE9DF"/>
+  <path d="M140 140 h120 a22 22 0 0 1 22 22 v58 a22 22 0 0 1 -22 22 h-120 a22 22 0 0 1 -22 -22 v-58 a22 22 0 0 1 22 -22z"
+                     fill="#8A8681" opacity="0.18"/>
+                  <path d="M140 140 h120 a22 22 0 0 1 22 22 v58 a22 22 0 0 1 -22 22 h-120 a22 22 0 0 1 -22 -22 v-58 a22 22 0 0 1 22 -22z"
+                     fill="none" stroke="#8A8681" stroke-width="10"/>
+                  <path d="M118 190 h164" stroke="#8A8681" stroke-width="8" stroke-dasharray="14 10"/>
+  <text x="200" y="352" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13"
+        fill="#333130" opacity="0.5">Placeholder image</text>
+</svg>

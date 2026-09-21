@@ -30,6 +30,17 @@ class ViewOrder extends ViewRecord
 
     protected string $view = 'filament.pages.view-order';
 
+    /**
+     * This page renders its own Blade view rather than a Filament infolist,
+     * so there is nothing to fill. Skipping the default fill also avoids
+     * pushing the order's money attributes — which cast to value objects —
+     * through Livewire's property serialiser, which cannot represent them.
+     */
+    protected function fillForm(): void
+    {
+        // Intentionally empty.
+    }
+
     protected function getHeaderActions(): array
     {
         return [

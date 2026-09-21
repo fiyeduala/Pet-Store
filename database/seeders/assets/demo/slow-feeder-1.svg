@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Placeholder product image">
+  <rect width="400" height="400" fill="#EFE9DF"/>
+  <ellipse cx="200" cy="205" rx="105" ry="78" fill="#8A8681" opacity="0.18"/>
+                      <ellipse cx="200" cy="200" rx="105" ry="78" fill="none" stroke="#8A8681" stroke-width="10"/>
+                      <path d="M150 200 q25 -34 50 0 t50 0" stroke="#8A8681" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <text x="200" y="352" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13"
+        fill="#333130" opacity="0.5">Placeholder image</text>
+</svg>
