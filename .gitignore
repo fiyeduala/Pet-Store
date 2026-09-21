@@ -26,3 +26,4 @@ Thumbs.db
 /database/database.sqlite
 /public/build
 /public/storage
+.env.testing

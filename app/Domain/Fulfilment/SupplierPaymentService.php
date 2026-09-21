@@ -77,6 +77,16 @@ class SupplierPaymentService
             throw new \LogicException('A supplier charge must be explicitly authorised by the caller.');
         }
 
+        // A retry of an already-settled payment returns the existing record
+        // rather than erroring. Making the happy path idempotent is what
+        // allows a caller to retry safely after an ambiguous failure without
+        // risking a second charge.
+        $settled = $fulfilment->supplierPayment;
+
+        if ($settled?->isSettled()) {
+            return $settled;
+        }
+
         $blocking = $this->blockingReason($fulfilment);
 
         if ($blocking !== null) {
